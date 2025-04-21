@@ -1,5 +1,6 @@
 #pragma once
 #include "KamataEngine.h"
+#include "player.h"
 // ゲームシーン
 class GameScene
 {
@@ -11,6 +12,7 @@ private:
 	KamataEngine::WorldTransform worldTransform_;
 	// カメラ
 	KamataEngine::Camera camera_;
+	Player* player_ = nullptr;
 
 public:
 	~GameScene();

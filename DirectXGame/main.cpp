@@ -2,24 +2,25 @@
 #include <Windows.h>
 #include "KamataEngine.h"
 #include "GameScene.h"
+#include "player.h"
 using namespace KamataEngine;
 // Windowsアプリでのエントリーポイント(main関数)
-int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR,int) 
+int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 {
 	//エンジンの初期化
 	KamataEngine::Initialize(L"LE2A_07_オオツカ_マモル_AL3");
 
 	// DirectXCommonインスタンスの取得
 	DirectXCommon* dxCommon = DirectXCommon::GetInstance();
-	
+
 	// ゲームシーンのインスタンス生成
 	GameScene* gameScene = new GameScene();
 	// ゲームシーンの初期化
 	gameScene->Initialize();
 
-	
+
 	//メインループ
-	while (true) 
+	while (true)
 	{
 		//エンジンの更新
 		if (KamataEngine::Update()) {
