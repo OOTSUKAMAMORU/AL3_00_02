@@ -1,9 +1,13 @@
 #pragma once
 #include "KamataEngine.h"
 #include "player.h"
+#include<vector>
 // ゲームシーン
 class GameScene
 {
+	//デバッグカメラ有効
+	bool isDebugCameraActive_ = false;
+	KamataEngine::DebugCamera* debugCamera_ = nullptr;
 private:
 	KamataEngine::Model* model_ = nullptr;
 	// テクスチャハンドル
@@ -13,6 +17,9 @@ private:
 	// カメラ
 	KamataEngine::Camera camera_;
 	Player* player_ = nullptr;
+	std::vector<std::vector<KamataEngine::WorldTransform*>> worldTransformBlocks_;
+	// 3Dモデルデータ
+	KamataEngine::Model* model_Block = nullptr;
 
 public:
 	~GameScene();
