@@ -2,6 +2,7 @@
 #include "MyMath.h"
 
 using namespace KamataEngine;
+
 // デストラクタ
 GameScene::~GameScene() 
 {
@@ -18,9 +19,13 @@ GameScene::~GameScene()
 	delete player_;
 	delete model_;
 	delete debugCamera_;
+	delete modelSkaydome_;
+	delete skydome_;
 }
 void GameScene::Initialize()
 {
+	//3Dモデルの生成
+	modelSkaydome_ = Model::CreateFromOBJ("skydome", true);
 	debugCamera_ = new DebugCamera(1280, 720);
 
 	//要素数
@@ -49,15 +54,18 @@ void GameScene::Initialize()
 		}
 	}
 	//3Dモデルデータの生成
-	model_Block = Model::CreateFromOBJ("cube");
+	model_Block = Model::CreateFromOBJ("Block");
+	model_Skydome = Model::CreateFromOBJ("Skydome");
 	// カメラ
 	camera_.Initialize();
 	worldTransform_.Initialize();
 	camera_.Initialize();
-	model_ = Model::Create();
+	model_ = Model::CreateFromOBJ("player");
 	textureHandle_ = TextureManager::Load("uvChecker.png");
 	player_ = new Player();
+	skydome_ = new Skydome();
 	player_->Initialize(model_, textureHandle_, &camera_);
+	skydome_->Initialize(modelSkaydome_, &camera_);
 }
 void GameScene::Update() 
 {
@@ -87,9 +95,11 @@ void GameScene::Update()
 		debugCamera_->Update();
 		camera_.matView = debugCamera_->GetCamera().matView;
 		camera_.matProjection = camera_.matProjection = debugCamera_->GetCamera().matProjection;
+
 		//ビュープロジェクション行列の更新と転送
 		camera_.TransferMatrix();
-	} else 
+	} 
+	else 
 	{
 		camera_.UpdateMatrix();
 	}
@@ -107,9 +117,11 @@ void GameScene::Draw()
 			if (!worldTransformBlock)
 				continue;
 			model_Block->Draw(*worldTransformBlock, camera_);
+
 		}
 	}
 	player_->Draw();
+	skydome_->Draw();
 	model_->Draw(worldTransform_, camera_, textureHandle_);
 	Model::PostDraw();
 }
