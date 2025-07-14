@@ -4,55 +4,49 @@
 using namespace KamataEngine;
 
 // デストラクタ
-GameScene::~GameScene() 
-{
-	for (std::vector<WorldTransform*>& worldTransformBlockLine : worldTransformBlocks_) 
-	{
-		for (WorldTransform* worldTransformBlock:worldTransformBlockLine)
-		{
-			delete worldTransformBlock;
+//GameScene::~GameScene()
+//{
+//	for (std::vector<WorldTransform*>& worldTransformBlockLine : worldTransformBlocks_) 
+//	{
+//		for (WorldTransform* worldTransformBlock:worldTransformBlockLine)
+//		{
+//			delete worldTransformBlock;
+//		}
+//	}
+//	worldTransformBlocks_.clear();
+//	//3Dモデルデータの解放
+//
+//	delete player_;
+//	delete model_;
+//	delete debugCamera_;
+//	delete modelSkaydome_;
+//	delete skydome_;
+//}
+void GameScene::Initialize() {
+	mapChipField_ = new MapChipField;
+	mapChipField_->LoadMapChipCsv("Resources/blocks.csv");
+	uint32_t numBlockVirtical = mapChipField_->GetNumBlockVirtical();
+	uint32_t numBlockHorizontal = mapChipField_->GetNumBlockHorizontal();
+	// 要素数を変更する
+	// 列数を設定
+	worldTransformBlocks_.resize(numBlockVirtical);
+	for (uint32_t i = 0; i < numBlockVirtical; i++) {
+		worldTransformBlocks_[i].resize(numBlockHorizontal);
+	}
+	for (uint32_t i = 0; i < numBlockVirtical; i++) {
+		for (uint32_t j = 0; j < numBlockVirtical; j++) {
+			if (mapChipField_->GetMapChipTypeByIndex(j, i) == MapChipType::kBlock) {
+				WorldTransform* worldTransform = new WorldTransform();
+				worldTransform->Initialize();
+				worldTransformBlocks_[i][j] = worldTransform;
+				worldTransformBlocks_[i][j]->translation_ = mapChipField_->GetMapChipPositionByIndex(j, i);
+			}
 		}
 	}
-	worldTransformBlocks_.clear();
-	//3Dモデルデータの解放
-
-	delete player_;
-	delete model_;
-	delete debugCamera_;
-	delete modelSkaydome_;
-	delete skydome_;
-}
-void GameScene::Initialize()
-{
-	//3Dモデルの生成
+	// 3Dモデルの生成
 	modelSkaydome_ = Model::CreateFromOBJ("skydome", true);
 	debugCamera_ = new DebugCamera(1280, 720);
 
-	//要素数
-	const uint32_t kNumBlockVirtical = 10;
-	const uint32_t kNumBlockHorizontal = 20;
-	//ブロック1個分の横幅
-	const float kBlockWidth = 2.0f;
-	const float kBloakHeight = 2.0f;
-	//要素数を変更する
-	worldTransformBlocks_.resize(kNumBlockVirtical);
-	for (uint32_t i = 0; i < kNumBlockVirtical; ++i) 
-	{
-		worldTransformBlocks_[i].resize(kNumBlockHorizontal);
-	}
-	//キューブの生成
-	for (uint32_t i=0;i<kNumBlockVirtical;++i) 
-	{
-		for (uint32_t j = 0; j < kNumBlockHorizontal;++j)
-		{
-			if ((i+j) % 2 == 0)
-				continue;
-			worldTransformBlocks_[i][j] = new WorldTransform();
-			worldTransformBlocks_[i][j]->Initialize();
-			worldTransformBlocks_[i][j]->translation_.x = kBlockWidth * j;
-			worldTransformBlocks_[i][j]->translation_.y = kBloakHeight * i;
-		}
-	}
 	//3Dモデルデータの生成
 	model_Block = Model::CreateFromOBJ("Block");
 	model_Skydome = Model::CreateFromOBJ("Skydome");
@@ -66,6 +60,31 @@ void GameScene::Initialize()
 	skydome_ = new Skydome();
 	player_->Initialize(model_, textureHandle_, &camera_);
 	skydome_->Initialize(modelSkaydome_, &camera_);
+	GenerateBlocks();
+}
+// 表示ブロックの生成
+void GameScene::GenerateBlocks() 
+{
+	// 要素数
+	uint32_t numBlockVirtical = mapChipField_->GetNumBlockVirtical();
+	uint32_t numBlockHorizontal = mapChipField_->GetNumBlockHorizontal();
+	// 要素数を変更する
+	worldTransformBlocks_.resize(numBlockVirtical);
+	for (uint32_t i = 0; i < numBlockVirtical; i++) {
+		worldTransformBlocks_[i].resize(numBlockHorizontal);
+	}
+	// ブロックの生成
+	for (uint32_t i = 0; i < numBlockVirtical; ++i) {
+		for (uint32_t j = 0; j < numBlockHorizontal; ++j) {
+			if (mapChipField_->GetMapChipTypeByIndex(j, i) == MapChipType::kBlock)
+			{
+				WorldTransform* worldTransform = new WorldTransform();
+				worldTransform->Initialize();
+				worldTransformBlocks_[i][j] = worldTransform;
+				worldTransformBlocks_[i][j]->translation_ = mapChipField_->GetMapChipPositionByIndex(j, i);
+			}
+		}
+	}
 }
 void GameScene::Update() 
 {

@@ -3,9 +3,12 @@
 #include "player.h"
 #include<vector>
 #include "Skydome.h"
+#include"MapChipField.h"
 // ゲームシーン
 class GameScene
 {
+	void GenerateBlocks();
+	MapChipField* mapChipField_; 
 	//3Dモデル
 	KamataEngine::Model* modelSkaydome_ = nullptr;
 	//デバッグカメラ有効
@@ -27,7 +30,6 @@ private:
 	KamataEngine::Model* model_Skydome = nullptr;
 
 public:
-	~GameScene();
 	// 初期化
 	void Initialize();
 	// 更新
