@@ -40,6 +40,9 @@ void GameScene::Initialize() {
 				worldTransform->Initialize();
 				worldTransformBlocks_[i][j] = worldTransform;
 				worldTransformBlocks_[i][j]->translation_ = mapChipField_->GetMapChipPositionByIndex(j, i);
+				Vector3 playerPosition = mapChipField_->GetMapChipPositionByIndex(,);
+				player_->Initialize(modelPlayer_, camera_, playerPosition);
+
 			}
 		}
 	}
