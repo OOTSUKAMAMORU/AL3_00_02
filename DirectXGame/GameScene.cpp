@@ -40,9 +40,6 @@ void GameScene::Initialize() {
 				worldTransform->Initialize();
 				worldTransformBlocks_[i][j] = worldTransform;
 				worldTransformBlocks_[i][j]->translation_ = mapChipField_->GetMapChipPositionByIndex(j, i);
-				Vector3 playerPosition = mapChipField_->GetMapChipPositionByIndex(,);
-				player_->Initialize(modelPlayer_, camera_, playerPosition);
-
 			}
 		}
 	}
@@ -61,7 +58,8 @@ void GameScene::Initialize() {
 	textureHandle_ = TextureManager::Load("uvChecker.png");
 	player_ = new Player();
 	skydome_ = new Skydome();
-	player_->Initialize(model_, textureHandle_, &camera_);
+	Vector3 playerPosition = mapChipField_->GetMapChipPositionByIndex(1, 18);
+	player_->Initialize(model_, &camera_, playerPosition);
 	skydome_->Initialize(modelSkaydome_, &camera_);
 	GenerateBlocks();
 }

@@ -3,13 +3,12 @@
 class Player 
 {
 public:
+	void Initialize(KamataEngine::Model* model, KamataEngine::Camera* camera, const KamataEngine::Vector3& position);
 	KamataEngine::Vector3 velocity_ = {};
 	
 	void Update();
 
 	void Draw();
-
-	void Initialize(KamataEngine::Model* model, Camera* camera, const Vector3& position);
 
 	static inline const float kAcceleration = 0.1f;
 	static inline const float kAttenuation = 0.1f;
@@ -40,16 +39,16 @@ private:
 	bool onGround_ = true;
 
 	//接地状態フラグ
-	BOOL onGrround_ = true;
+	//BOOL onGrround_ = true;
 
 	//重力加速度(下方向)
-	static inline const float kGravityAcceleration = 10;
+	static inline const float kGravityAcceleration = 0.1f;
 
 	//最大落下速度(下方向)
-	static inline const float kLimitFallSpead = 10;
+	static inline const float kLimitFallSpeed = 1.0f;
 
 	//ジャンプ初速(上方向)
-	static inline const float kJumpAcceleration = 10;
+	static inline const float kJumpAcceleration = 1.0f;
 
 	
 };
