@@ -26,13 +26,13 @@ void Player::Update()
 
 		// 移動入力
 		// 左右移動動作
-		if (Input::GetInstance()->PushKey(DIK_LEFT) || Input::GetInstance()->PushKey(DIK_LEFT)) {
+		if (Input::GetInstance()->PushKey(DIK_LEFT) || Input::GetInstance()->PushKey(DIK_RIGHT)) {
 			// 左右加速
 			Vector3 acceleration = {};
 			if (Input::GetInstance()->PushKey(DIK_RIGHT)) {
 				// 左移動中の右入力
 				if (velocity_.x < 0.0f) {
-					velocity_.x += (1.0f - kAttenuation);
+					velocity_.x *= (1.0f - kAttenuation);
 				}
 				acceleration.x += kAcceleration;
 
@@ -130,13 +130,6 @@ void Player::Update()
 	    worldTransform_.matWorld_ = MakeAffineMatrix(worldTransform_.scale_, worldTransform_.rotation_, worldTransform_.translation_);
 	    worldTransform_.TransferMatrix();
 	}
-	//描画
-	void Player::Draw() 
-	{
-		//3Dモデルを描画
-		model_->Draw(worldTransform_, *camera_);
-	}
-}
 
 	// Drawの関数定義
 			void Player::Draw() 
