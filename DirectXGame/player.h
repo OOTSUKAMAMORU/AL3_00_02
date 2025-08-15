@@ -13,6 +13,9 @@ public:
 	static inline const float kAcceleration = 0.1f;
 	static inline const float kAttenuation = 0.1f;
 	static inline const float kLimitRunSpeed =1.0f;
+	const KamataEngine::WorldTransform& GetWorldTransform() const { return worldTransform_; }
+	const KamataEngine::Vector3& GetVelocity() const { return velocity_;}
+	const KamataEngine::Vector3& GetVelocty() const { return velocity_; }
 
 private:
 	KamataEngine::WorldTransform worldTransform_;
@@ -49,6 +52,4 @@ private:
 
 	//ジャンプ初速(上方向)
 	static inline const float kJumpAcceleration = 1.0f;
-
-	
 };

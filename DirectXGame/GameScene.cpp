@@ -1,9 +1,8 @@
 #include "GameScene.h"
 #include "MyMath.h"
-
+#include "CameraController.h"
 using namespace KamataEngine;
-
-// デストラクタ
+    // デストラクタ
 //GameScene::~GameScene()
 //{
 //	for (std::vector<WorldTransform*>& worldTransformBlockLine : worldTransformBlocks_) 
@@ -62,6 +61,12 @@ void GameScene::Initialize() {
 	player_->Initialize(model_, &camera_, playerPosition);
 	skydome_->Initialize(modelSkaydome_, &camera_);
 	GenerateBlocks();
+	cameraController_ = new CameraController();
+	cameraController_->Intialize();
+	cameraController_->SetTarget(player_);
+	cameraController_->Reset();
+	CameraController::Rect cameraArea = {12.0f, 100 - 12.0f, 6.0f, 6.0f};
+	cameraController_->SetMovableArea(cameraArea);
 }
 // 表示ブロックの生成
 void GameScene::GenerateBlocks() 
@@ -121,7 +126,11 @@ void GameScene::Update()
 	} 
 	else 
 	{
-		camera_.UpdateMatrix();
+		cameraController_->Update();
+		camera_.matView = cameraController_->GetViewProjection().matView;
+		camera_.matProjection = cameraController_->GetViewProjection().matProjection;
+		//ビュープロジェクション行列の転送
+		camera_.TransferMatrix();
 	}
 #endif
 }
