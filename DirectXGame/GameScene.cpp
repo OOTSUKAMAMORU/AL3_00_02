@@ -67,6 +67,7 @@ void GameScene::Initialize() {
 	cameraController_->Reset();
 	CameraController::Rect cameraArea = {12.0f, 100 - 12.0f, 6.0f, 6.0f};
 	cameraController_->SetMovableArea(cameraArea);
+	player_->SetMapChipField(mapChipField_);	
 }
 // 表示ブロックの生成
 void GameScene::GenerateBlocks() 
