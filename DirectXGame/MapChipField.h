@@ -32,7 +32,7 @@ public:
 		uint32_t xIndex;
 		uint32_t yIndex;
 	};
-	IndexSet GetMapChipIndexSetByPosition(const Vector3& position);
+	IndexSet GetMapChipIndexSetByPosition(const KamataEngine::Vector3& position);
 	struct  Rect 
 	{
 		float left;

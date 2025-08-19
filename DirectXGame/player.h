@@ -18,7 +18,7 @@ public:
 	const KamataEngine::Vector3& GetVelocty() const { return velocity_; }
 	void SetMapChipField(MapChipField* mapChipField) { mapChipField_ = mapChipField; }
 	static inline const float kWidth = 0.8f;
-	static inline const float kWidth = 0.8f;
+	static inline const float kHeight = 0.8f;
 
 	enum Corner 
 	{
@@ -72,8 +72,11 @@ public:
 		MapChipField* mapChipField_ = nullptr;
 	    void InputMove();
 	    void AnimateTurn();
+	    void CheckMapCollision(CollisionMapInfo& info);
+	    void CheckMapCollisionUp(CollisionMapInfo& info);
 		//指定した角の座標計算
 	    KamataEngine::Vector3 CornerPosition(const KamataEngine::Vector3& center, Corner corner);
-	    void(const CollisionMapInfo& info);
-	    void(const CollisionMapInfo& info);
+	    static inline const float kBlank = 0.1f;
+	    void CheckMapMove(const CollisionMapInfo& info);
+	    void CheckMapCeiling(const CollisionMapInfo& info);
 	};
