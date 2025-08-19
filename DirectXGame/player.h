@@ -36,7 +36,7 @@ public:
 		bool hitWall = false;
 		KamataEngine::Vector3 move;
 	};
-	CollisionMapInfo& info;
+
 	private:
 		KamataEngine::WorldTransform worldTransform_;
 		KamataEngine::Model* model_ = nullptr;

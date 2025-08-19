@@ -23,6 +23,8 @@ void Player::Update() {
 	CollisionMapInfo collisionMapInfo;
 	collisionMapInfo.move = velocity_;
 	CheckMapCollision(collisionMapInfo);
+	CheckMapMove(collisionMapInfo);
+	CheckMapCeiling(collisionMapInfo);
 
 	// 着地フラグ
 	bool landing = false;
@@ -55,7 +57,6 @@ void Player::Update() {
 		}
 	}
 	// 移動
-	worldTransform_.translation_ += velocity_;
 
 	// 旋回制御
 	AnimateTurn();
@@ -157,7 +158,6 @@ void Player::CheckMapCollisionUp(CollisionMapInfo& info)
 		positionsNew[i] = CornerPosition(worldTransform_.translation_+ info.move, static_cast < Corner>(i));
 	}
 	// 移動後の４つの角の座標
-	std::array<Vector3, kNumCorner> positionsNew;
 	for (uint32_t i = 0; i < positionsNew.size(); ++i) {
 		positionsNew[i] = CornerPosition(worldTransform_.translation_ + info.move, static_cast<Corner>(i));
 	}
@@ -187,7 +187,7 @@ void Player::CheckMapCollisionUp(CollisionMapInfo& info)
 		indexSet = mapChipField_->GetMapChipIndexSetByPosition	(worldTransform_.translation_ + info.move + Vector3(0, +kHeight / 2.0f, 0));
 		//めり込み先ブロックの範囲短形
 		MapChipField::Rect rect = mapChipField_->GetRectByIndex(indexSet.xIndex, indexSet.yIndex);
-		info.move.y = std::max(0.0f, rect.bottom - worldTransform_.translation_.y - (kBlank));
+		info.move.y = std::max(0.0f, rect.bottom - worldTransform_.translation_.y - (kHeight/2.0f+kBlank));
 		//天井に当たったことを記録する
 		info.ceiling = true;
 	}
@@ -228,8 +228,8 @@ KamataEngine::Vector3 Player::CornerPosition(const KamataEngine::Vector3& center
 	Vector3 offsetTable[kNumCorner] = {
 	    {+kWidth / 2.0f, -kHeight / 2.0f, 0},
         {-kWidth / 2.0f, -kHeight / 2.0f, 0},
-        {+kWidth / 2.0f, -kHeight / 2.0f, 0}
-        {-kWidth / 2.0f, -kHeight / 2.0f, 0}
+        {+kWidth / 2.0f, +kHeight / 2.0f, 0},
+        {-kWidth / 2.0f, +kHeight / 2.0f, 0}
     };
 	return center + offsetTable[static_cast<uint32_t>(corner)];
 }
