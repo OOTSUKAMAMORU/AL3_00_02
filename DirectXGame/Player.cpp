@@ -27,37 +27,8 @@ void Player::Update() {
 	CheckMapCollision(collisionMapInfo);
 	CheckMapMove(collisionMapInfo);
 	CheckMapCeiling(collisionMapInfo);
+	CheckMapLanding(collisionMapInfo);
 
-	// 着地フラグ
-	bool landing = false;
-	// 地面との当たり判定
-	// 下降中？
-	if (velocity_.y < 0) {
-		// Y座標が地面以下になったら着地
-		if (worldTransform_.translation_.y <= 1.0f) {
-			landing = true;
-		}
-	}
-
-	// 接地判定
-	if (onGround_) {
-		// ジャンプ開始
-		if (velocity_.y > 0.0f) {
-			onGround_ = false;
-		}
-	} else {
-		// 着地
-		if (landing) {
-			// めり込み俳斤
-			worldTransform_.translation_.y = 1.0f;
-			// 摩擦で横方向速度が減衰する
-			velocity_.x *= (1.0f - kAttenuation);
-			// 下方向速度をリセット
-			velocity_.y = 0.0f;
-			// 接地状態に移行
-			onGround_ = true;
-		}
-	}
 	// 移動
 
 	// 旋回制御
@@ -313,10 +284,10 @@ void Player::CheckMapCollisionLeft(CollisionMapInfo& info) {
 	// ブロックにヒット?
 	if (hit) {
 		// めり込みを排除する方向に移動量を設定する
-		indexSet = mapChipField_->GetMapChipIndexSetByPosition(worldTransform_.translation_ + info.move + Vector3(+kWidth / 2.0f, 0, 0));
+		indexSet = mapChipField_->GetMapChipIndexSetByPosition(worldTransform_.translation_ + info.move + Vector3(-kWidth / 2.0f, 0, 0));
 		// めり込み先ブロックの範囲短形
 		MapChipField::Rect rect = mapChipField_->GetRectByIndex(indexSet.xIndex, indexSet.yIndex);
-		info.move.x = std::min(0.0f, rect.right - worldTransform_.translation_.x - (kWidth / 2.0f + kBlank));
+		info.move.x = std::min(0.0f, rect.right - worldTransform_.translation_.x + (kWidth / 2.0f + kBlank));
 		// 天井に当たったことを記録する
 		info.hitWall = true;
 	}
@@ -374,16 +345,10 @@ void Player::CheckMapCollisionLeft(CollisionMapInfo& info) {
 		    // 着地フラグ
 		    if (info.landing) 
 			{
-			    // 着地状態に切り替える(落下を止める)
 			    onGround_ = true;
+			    velocity_.x *= (1.0f - kAttenuationLanding);
+			    velocity_.y = 0.0f;
 		    }
-	    }
-
-	    // 着地フラグ
-	    if (info.landing) {
-		    onGround_ = true;
-		    velocity_.x += (1.0f - kAttenuationLanding);
-		    velocity_.y = 0.0f;
 	    }
     }
 //判定結果を反映して移動させる
