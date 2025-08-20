@@ -3,6 +3,12 @@
 #include "MapChipField.h"
 class Player {
 public:
+	struct CollisionMapInfo {
+		bool ceiling = false;
+		bool landing = false;
+		bool hitWall = false;
+		KamataEngine::Vector3 move;
+	};
 	void Initialize(KamataEngine::Model* model, KamataEngine::Camera* camera, const KamataEngine::Vector3& position);
 	KamataEngine::Vector3 velocity_ = {};
 
@@ -19,22 +25,17 @@ public:
 	void SetMapChipField(MapChipField* mapChipField) { mapChipField_ = mapChipField; }
 	static inline const float kWidth = 0.8f;
 	static inline const float kHeight = 0.8f;
+	const CollisionMapInfo& info;
+	static inline const float kAttenuationLanding = 0.1f;
 
 	enum Corner 
 	{
-		kRIghtBottom,
+		kRightBottom,
 		kLeftBottom,
 		kRightTop,
 		kLeftTop,
 
 		kNumCorner
-	};
-	struct CollisionMapInfo 
-	{
-		bool ceiling = false;
-		bool landing = false;
-		bool hitWall = false;
-		KamataEngine::Vector3 move;
 	};
 
 	private:
@@ -74,6 +75,8 @@ public:
 	    void AnimateTurn();
 	    void CheckMapCollision(CollisionMapInfo& info);
 	    void CheckMapCollisionUp(CollisionMapInfo& info);
+	    void CheckMapCollisionDown(CollisionMapInfo& info);
+
 		//指定した角の座標計算
 	    KamataEngine::Vector3 CornerPosition(const KamataEngine::Vector3& center, Corner corner);
 	    static inline const float kBlank = 0.1f;

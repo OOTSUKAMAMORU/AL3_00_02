@@ -3,6 +3,8 @@
 #include "MyMath.h"
 #include <algorithm>
 #include <numbers>
+#include <algorithm>
+#define NOMINMAX
 using namespace KamataEngine;
 using namespace MathUtility;
 
@@ -140,7 +142,7 @@ void Player::InputMove()
 void Player::CheckMapCollision(CollisionMapInfo& info) 
 {
 	CheckMapCollisionUp(info);
-	//CheckMapCollisionDown(info);
+	CheckMapCollisionDown(info);
 	//CheckMapCollisionRight(info);
 	//CheckMapCollisionLeft(info);
 }
@@ -193,6 +195,63 @@ void Player::CheckMapCollisionUp(CollisionMapInfo& info)
 	}
 }
 
+// マップ衝突チェック　下
+void Player::CheckMapCollisionDown(CollisionMapInfo& info) {
+	// 下昇あり？
+	if (info.move.y >= 0) {
+		return;
+	}
+	std::array<Vector3, kNumCorner> positionsNew;
+	for (uint32_t i = 0; i < positionsNew.size(); ++i) {
+		positionsNew[i] = CornerPosition(worldTransform_.translation_ + info.move, static_cast<Corner>(i));
+	}
+	// 移動後の４つの角の座標
+	for (uint32_t i = 0; i < positionsNew.size(); ++i) {
+		positionsNew[i] = CornerPosition(worldTransform_.translation_ + info.move, static_cast<Corner>(i));
+	}
+	MapChipType mapChipType;
+	// 真下の当たり判定を行う
+	bool hit = false;
+	// 左下の判定
+	MapChipField::IndexSet indexSet;
+	indexSet = mapChipField_->GetMapChipIndexSetByPosition(positionsNew[kLeftBottom]);
+	mapChipType = mapChipField_->GetMapChipTypeByIndex(indexSet.xIndex, indexSet.yIndex);
+	if (mapChipType == MapChipType::kBlock) {
+		hit = true;
+	}
+	// 右下点の判定
+	// kRightTopについて同様に判定する。
+	indexSet = mapChipField_->GetMapChipIndexSetByPosition(positionsNew[kRightBottom]);
+	mapChipType = mapChipField_->GetMapChipTypeByIndex(indexSet.xIndex, indexSet.yIndex);
+	if (mapChipType == MapChipType::kBlock) {
+		hit = true;
+	}
+	// ブロックにヒット?
+	if (hit) {
+		// めり込みを排除する方向に移動量を設定する
+		indexSet = mapChipField_->GetMapChipIndexSetByPosition(worldTransform_.translation_ + info.move + Vector3(0, -kHeight / 2.0f, 0));
+		// めり込み先ブロックの範囲短形
+		MapChipField::Rect rect = mapChipField_->GetRectByIndex(indexSet.xIndex, indexSet.yIndex);
+		info.move.y = std::min(0.0f, rect.top - worldTransform_.translation_.y + (kHeight / 2.0f + kBlank));
+		// 床に当たったことを記録する
+		info.landing = true;
+	}
+	//着地フラグ
+	if (info.) 
+	{
+		onGround_ = true;
+		velocity_.x += (1.0f - kAttenuationLanding);
+		velocity_.y = 0.0f;
+	}
+	//ジャンプ開始
+	if (velocity_.y > 0.0f) {
+		onGround_ = false;
+	} 
+	else 
+	{
+	}
+
+}
 //判定結果を反映して移動させる
 void Player::CheckMapMove(const CollisionMapInfo& info) 
 {
