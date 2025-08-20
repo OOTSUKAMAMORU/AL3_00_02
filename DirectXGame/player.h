@@ -75,6 +75,8 @@ public:
 	    void CheckMapCollision(CollisionMapInfo& info);
 	    void CheckMapCollisionUp(CollisionMapInfo& info);
 	    void CheckMapCollisionDown(CollisionMapInfo& info);
+	    void CheckMapCollisionRight(CollisionMapInfo& info);
+	    void CheckMapCollisionLeft(CollisionMapInfo& info);
 	    static inline const float kAttenuationWall = 0.2f;
 
 		//指定した角の座標計算
