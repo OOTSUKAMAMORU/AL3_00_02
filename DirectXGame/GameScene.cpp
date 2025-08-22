@@ -16,12 +16,29 @@ GameScene::~GameScene()
 	//3Dモデルデータの解放
 
 	delete player_;
-	delete enemy_;
+	for (Enemy*enemy:enemies_) 
+	{
+		delete enemy;
+	}
 	delete model_;
 	delete debugCamera_;
 	delete modelSkaydome_;
 	delete skydome_;
 	delete model_Enemy;
+}
+void GameScene::CheckAllCollisions() 
+{ 
+	AABB aabb1, aabb2;
+	aabb1 = player_->GetAABB();
+	for (Enemy*enemy:enemies_) 
+	{
+		aabb2 = enemy->GetAABB();
+		if (IsCollision(aabb1, aabb2)) 
+		{
+			player_->OnCollision(enemy);
+			enemy->OnCollision(player_);
+		}
+	}
 }
 void GameScene::Initialize() {
 	mapChipField_ = new MapChipField;
@@ -59,12 +76,17 @@ void GameScene::Initialize() {
 	model_ = Model::CreateFromOBJ("player");
 	textureHandle_ = TextureManager::Load("uvChecker.png");
 	player_ = new Player();
-	enemy_ = new Enemy();
 	skydome_ = new Skydome();
 	Vector3 playerPosition = mapChipField_->GetMapChipPositionByIndex(1, 18);
 	player_->Initialize(model_, &camera_, playerPosition);
-	Vector3 enemyPosition = mapChipField_->GetMapChipPositionByIndex(10, 18);
-	enemy_->Initialize(model_Enemy, &camera_, enemyPosition);
+
+	for (int32_t i = 0; i < 5; ++i) 
+	{
+		Enemy* newEnemy = new Enemy();
+		Vector3 enemyPosition = mapChipField_->GetMapChipPositionByIndex(10+i, 18);
+		newEnemy->Initialize(model_Enemy, &camera_, enemyPosition);
+		enemies_.push_back(newEnemy);
+	}
 	skydome_->Initialize(modelSkaydome_, &camera_);
 	GenerateBlocks();
 	cameraController_ = new CameraController();
@@ -117,7 +139,12 @@ void GameScene::Update()
 		}
 	}
 	player_->Update();
-	enemy_->Update();
+
+	for (Enemy*enemy:enemies_) 
+	{
+		enemy->Update();
+	}
+
 #ifdef _DEBUG
 	if (Input::GetInstance()->TriggerKey(DIK_0)) 
 	{
@@ -141,6 +168,7 @@ void GameScene::Update()
 		camera_.TransferMatrix();
 	}
 #endif
+	CheckAllCollisions();
 }
 void GameScene::Draw()
 {
@@ -158,7 +186,12 @@ void GameScene::Draw()
 		}
 	}
 	player_->Draw();
-	enemy_->Draw();
+	
+	for (Enemy* enemy : enemies_) 
+	{
+		enemy->Draw();
+	}
+
 	skydome_->Draw();
 	model_->Draw(worldTransform_, camera_, textureHandle_);
 	Model::PostDraw();

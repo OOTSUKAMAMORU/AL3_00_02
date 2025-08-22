@@ -1,6 +1,5 @@
 #define NOMINMAX
 #include "player.h"
-#include "MyMath.h"
 #include <algorithm>
 #include <numbers>
 #include <algorithm>
@@ -48,6 +47,27 @@ void Player::Draw() {
 
 	model_->Draw(worldTransform_, *camera_);
 }
+KamataEngine::Vector3 Player::GetWorldPosition() 
+{ 
+	Vector3 worldPos;
+	worldPos.x = worldTransform_.matWorld_.m[3][0];
+	worldPos.y = worldTransform_.matWorld_.m[3][1];
+	worldPos.z = worldTransform_.matWorld_.m[3][2];
+	return worldPos;
+}
+
+AABB Player::GetAABB() 
+{
+	return AABB();
+	Vector3 worldPos = GetWorldPosition();
+	AABB aabb;
+	aabb.min = {worldPos.x - 0.8f/ 2.0f, worldPos.y - 0.8f/ 2.0f, worldPos.z - 0.8f/ 2.0f};
+	aabb.min = {worldPos.x - 0.8f/ 2.0f, worldPos.y - 0.8f/ 2.0f, worldPos.z - 0.8f/ 2.0f};
+	return aabb;
+}
+
+
+
 // 移動入力
 void Player::InputMove() 
 {
@@ -351,7 +371,12 @@ void Player::CheckMapCollisionLeft(CollisionMapInfo& info) {
 		    }
 	    }
     }
-//判定結果を反映して移動させる
+    void Player::OnCollision(const Enemy* enemy) 
+	{ 
+		(void)enemy;
+	    velocity_ += Vector3(0,1,0);
+	}
+    //判定結果を反映して移動させる
 void Player::CheckMapMove(const CollisionMapInfo& info) 
 {
 	//移動

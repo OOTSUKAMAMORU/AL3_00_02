@@ -27,7 +27,7 @@ private:
 	// カメラ
 	KamataEngine::Camera camera_;
 	Player* player_ = nullptr;
-	Enemy* enemy_ = nullptr;
+	std::list<Enemy*> enemies_;
 	Skydome* skydome_ = nullptr;
 	CameraController* cameraController_ = nullptr;
 	std::vector<std::vector<KamataEngine::WorldTransform*>> worldTransformBlocks_;
@@ -44,4 +44,6 @@ public:
 	// 描画
 	void Draw();
 	~GameScene();
+	void CheckAllCollisions();
+
 };

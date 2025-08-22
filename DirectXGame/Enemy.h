@@ -1,5 +1,6 @@
 #pragma once
 #include "KamataEngine.h"
+class Player;
 class Enemy 
 {
 public:
@@ -11,6 +12,10 @@ public:
 	static inline const float kWalkSpeed = 0.1f;
 	KamataEngine::Vector3 velocity_ = {};
 	float walkTimer_ = 0.0f;
+	KamataEngine::Vector3 GetWorldPosition();
+	// AABBを取得
+	AABB GetAABB();
+	void OnCollision(const Player* player);
 
 private:
 	KamataEngine::WorldTransform worldTransform_;
