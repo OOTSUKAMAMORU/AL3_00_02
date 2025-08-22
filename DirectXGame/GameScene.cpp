@@ -3,24 +3,26 @@
 #include "CameraController.h"
 using namespace KamataEngine;
     // デストラクタ
-//GameScene::~GameScene()
-//{
-//	for (std::vector<WorldTransform*>& worldTransformBlockLine : worldTransformBlocks_) 
-//	{
-//		for (WorldTransform* worldTransformBlock:worldTransformBlockLine)
-//		{
-//			delete worldTransformBlock;
-//		}
-//	}
-//	worldTransformBlocks_.clear();
-//	//3Dモデルデータの解放
-//
-//	delete player_;
-//	delete model_;
-//	delete debugCamera_;
-//	delete modelSkaydome_;
-//	delete skydome_;
-//}
+GameScene::~GameScene()
+{
+	for (std::vector<WorldTransform*>& worldTransformBlockLine : worldTransformBlocks_) 
+	{
+		for (WorldTransform* worldTransformBlock:worldTransformBlockLine)
+		{
+			delete worldTransformBlock;
+		}
+	}
+	worldTransformBlocks_.clear();
+	//3Dモデルデータの解放
+
+	delete player_;
+	delete enemy_;
+	delete model_;
+	delete debugCamera_;
+	delete modelSkaydome_;
+	delete skydome_;
+	delete model_Enemy;
+}
 void GameScene::Initialize() {
 	mapChipField_ = new MapChipField;
 	mapChipField_->LoadMapChipCsv("Resources/blocks.csv");
@@ -49,6 +51,7 @@ void GameScene::Initialize() {
 	//3Dモデルデータの生成
 	model_Block = Model::CreateFromOBJ("Block");
 	model_Skydome = Model::CreateFromOBJ("Skydome");
+	model_Enemy = Model::CreateFromOBJ("Enemy");
 	// カメラ
 	camera_.Initialize();
 	worldTransform_.Initialize();
@@ -56,9 +59,12 @@ void GameScene::Initialize() {
 	model_ = Model::CreateFromOBJ("player");
 	textureHandle_ = TextureManager::Load("uvChecker.png");
 	player_ = new Player();
+	enemy_ = new Enemy();
 	skydome_ = new Skydome();
 	Vector3 playerPosition = mapChipField_->GetMapChipPositionByIndex(1, 18);
 	player_->Initialize(model_, &camera_, playerPosition);
+	Vector3 enemyPosition = mapChipField_->GetMapChipPositionByIndex(10, 18);
+	enemy_->Initialize(model_Enemy, &camera_, enemyPosition);
 	skydome_->Initialize(modelSkaydome_, &camera_);
 	GenerateBlocks();
 	cameraController_ = new CameraController();
@@ -111,6 +117,7 @@ void GameScene::Update()
 		}
 	}
 	player_->Update();
+	enemy_->Update();
 #ifdef _DEBUG
 	if (Input::GetInstance()->TriggerKey(DIK_0)) 
 	{
@@ -151,6 +158,7 @@ void GameScene::Draw()
 		}
 	}
 	player_->Draw();
+	enemy_->Draw();
 	skydome_->Draw();
 	model_->Draw(worldTransform_, camera_, textureHandle_);
 	Model::PostDraw();

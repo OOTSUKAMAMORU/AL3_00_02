@@ -1,6 +1,7 @@
 #pragma once
 #include "KamataEngine.h"
 #include "player.h"
+#include "Enemy.h"
 #include<vector>
 #include "Skydome.h"
 #include"MapChipField.h"
@@ -16,6 +17,7 @@ class GameScene
 	//デバッグカメラ有効
 	bool isDebugCameraActive_ = false;
 	KamataEngine::DebugCamera* debugCamera_ = nullptr;
+
 private:
 	KamataEngine::Model* model_ = nullptr;
 	// テクスチャハンドル
@@ -25,12 +27,14 @@ private:
 	// カメラ
 	KamataEngine::Camera camera_;
 	Player* player_ = nullptr;
+	Enemy* enemy_ = nullptr;
 	Skydome* skydome_ = nullptr;
 	CameraController* cameraController_ = nullptr;
 	std::vector<std::vector<KamataEngine::WorldTransform*>> worldTransformBlocks_;
 	// 3Dモデルデータ
 	KamataEngine::Model* model_Block = nullptr;
 	KamataEngine::Model* model_Skydome = nullptr;
+	KamataEngine::Model* model_Enemy = nullptr;
 
 public:
 	// 初期化
@@ -39,4 +43,5 @@ public:
 	void Update();
 	// 描画
 	void Draw();
+	~GameScene();
 };
