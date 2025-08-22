@@ -58,11 +58,10 @@ KamataEngine::Vector3 Player::GetWorldPosition()
 
 AABB Player::GetAABB() 
 {
-	return AABB();
 	Vector3 worldPos = GetWorldPosition();
 	AABB aabb;
 	aabb.min = {worldPos.x - 0.8f/ 2.0f, worldPos.y - 0.8f/ 2.0f, worldPos.z - 0.8f/ 2.0f};
-	aabb.min = {worldPos.x - 0.8f/ 2.0f, worldPos.y - 0.8f/ 2.0f, worldPos.z - 0.8f/ 2.0f};
+	aabb.max = {worldPos.x + 0.8f/ 2.0f, worldPos.y + 0.8f/ 2.0f, worldPos.z + 0.8f/ 2.0f};
 	return aabb;
 }
 
