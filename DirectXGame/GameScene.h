@@ -35,6 +35,7 @@ private:
 	KamataEngine::Model* model_Block = nullptr;
 	KamataEngine::Model* model_Skydome = nullptr;
 	KamataEngine::Model* model_Enemy = nullptr;
+	KamataEngine::Model* model_DeathParticles = nullptr;
 
 public:
 	// 初期化

@@ -25,6 +25,7 @@ GameScene::~GameScene()
 	delete modelSkaydome_;
 	delete skydome_;
 	delete model_Enemy;
+	delete model_DeathParticles;
 }
 void GameScene::CheckAllCollisions() 
 { 
@@ -70,6 +71,8 @@ void GameScene::Initialize()
 	model_Block = Model::CreateFromOBJ("Block");
 	model_Skydome = Model::CreateFromOBJ("Skydome");
 	model_Enemy = Model::CreateFromOBJ("Enemy");
+	model_DeathParticles = Model::CreateFromOBJ("DeathParticle");
+	
 	// カメラ
 	camera_.Initialize();
 	worldTransform_.Initialize();
@@ -98,8 +101,8 @@ void GameScene::Initialize()
 	cameraController_->SetMovableArea(cameraArea);
 	player_->SetMapChipField(mapChipField_);
 	//仮の生成処理。後で消す。
-	deathParticles_ = new DeathParticles_;
-	deathParticles_->Intialize(, &camera_, );
+	deathParticles_ = new DeathParticles;
+	deathParticles_->Initialize(model_DeathParticles, &camera_, playerPosition);
 }
 // 表示ブロックの生成
 void GameScene::GenerateBlocks() 
@@ -173,9 +176,9 @@ void GameScene::Update()
 	}
 #endif
 	CheckAllCollisions();
-	if () 
+	if (deathParticles_) 
 	{
-		deathParticles_->Updete();
+		deathParticles_->Update();
 	}
 }
 void GameScene::Draw()
@@ -200,11 +203,11 @@ void GameScene::Draw()
 		enemy->Draw();
 	}
 
+	if (deathParticles_) {
+		deathParticles_->Draw();
+	}
 	skydome_->Draw();
 	model_->Draw(worldTransform_, camera_, textureHandle_);
 	Model::PostDraw();
-	if () 
-	{
-		deathParticles_->Draw();
-	}
+	
 }

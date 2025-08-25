@@ -14,7 +14,7 @@ void Enemy::Initialize(KamataEngine::Model* model, KamataEngine::Camera* camera,
 	walkTimer_ = 0.0f;
 
 }
-void Enemy::Update() 
+void Enemy::Update()
 {
 	worldTransform_.matWorld_ = MakeAffineMatrix(worldTransform_.scale_, worldTransform_.rotation_, worldTransform_.translation_);
 	worldTransform_.TransferMatrix();

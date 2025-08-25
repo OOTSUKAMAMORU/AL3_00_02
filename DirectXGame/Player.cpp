@@ -2,7 +2,6 @@
 #include "player.h"
 #include <algorithm>
 #include <numbers>
-#include <algorithm>
 #define NOMINMAX
 using namespace KamataEngine;
 using namespace MathUtility;
