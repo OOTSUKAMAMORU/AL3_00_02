@@ -6,7 +6,7 @@
 #include "Skydome.h"
 #include"MapChipField.h"
 #include "CameraController.h"
-
+#include "DeathParticles.h"
 // ゲームシーン
 class GameScene
 {
@@ -45,5 +45,6 @@ public:
 	void Draw();
 	~GameScene();
 	void CheckAllCollisions();
+	DeathParticles* deathParticles_ = nullptr;
 
 };

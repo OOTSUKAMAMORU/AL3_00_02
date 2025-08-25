@@ -40,7 +40,8 @@ void GameScene::CheckAllCollisions()
 		}
 	}
 }
-void GameScene::Initialize() {
+void GameScene::Initialize() 
+{
 	mapChipField_ = new MapChipField;
 	mapChipField_->LoadMapChipCsv("Resources/blocks.csv");
 	uint32_t numBlockVirtical = mapChipField_->GetNumBlockVirtical();
@@ -95,7 +96,10 @@ void GameScene::Initialize() {
 	cameraController_->Reset();
 	CameraController::Rect cameraArea = {12.0f, 100 - 12.0f, 6.0f, 6.0f};
 	cameraController_->SetMovableArea(cameraArea);
-	player_->SetMapChipField(mapChipField_);	
+	player_->SetMapChipField(mapChipField_);
+	//仮の生成処理。後で消す。
+	deathParticles_ = new DeathParticles_;
+	deathParticles_->Intialize(, &camera_, );
 }
 // 表示ブロックの生成
 void GameScene::GenerateBlocks() 
@@ -169,6 +173,10 @@ void GameScene::Update()
 	}
 #endif
 	CheckAllCollisions();
+	if () 
+	{
+		deathParticles_->Updete();
+	}
 }
 void GameScene::Draw()
 {
@@ -195,4 +203,8 @@ void GameScene::Draw()
 	skydome_->Draw();
 	model_->Draw(worldTransform_, camera_, textureHandle_);
 	Model::PostDraw();
+	if () 
+	{
+		deathParticles_->Draw();
+	}
 }
