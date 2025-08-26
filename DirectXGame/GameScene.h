@@ -56,4 +56,6 @@ public:
 	//ゲームの現在フェーズ(変数)
 	Phase phase_;
 	void ChangePhase();
+	bool IsFinished() const { return finished_; }
+	bool finished_ = false;
 };

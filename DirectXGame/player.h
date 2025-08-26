@@ -3,12 +3,9 @@
 #include "KamataEngine.h"
 #include "MapChipField.h"
 #include "MyMath.h"
-#include "TitleScene.h"
 #include <Windows.h>
 using namespace KamataEngine;
 // シーンはグローバル変数で宣言
-GameScene* gameScene = nullptr;
-TitleScene* titleScene = nullptr;
 
 class Enemy;
 class Player {
@@ -106,14 +103,4 @@ private:
 	// デスフラグ
 	bool isDead_ = false;
 	bool IsDead() const { return isDead_; }
-	// シーン(型)
-	enum class Scene {
-		kUnknown = 0,
-		kTitle,
-		kGame,
-		kGame,
-	};
-	// 現在シーン(型)
-	Scene scene = Scene::kUnknown;
-	
 };

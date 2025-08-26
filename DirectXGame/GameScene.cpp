@@ -189,9 +189,9 @@ void GameScene::Update()
 	}
 	switch (phase_) 
 	{
-	    case Phase::kPlay;
+	case Phase::kPlay:
 			break;
-			case Phase::kDeath;
+	case Phase::kDeath:
 			break;
 	}
 }
