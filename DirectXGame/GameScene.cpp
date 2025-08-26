@@ -1,6 +1,10 @@
 #include "GameScene.h"
 #include "MyMath.h"
 #include "CameraController.h"
+#include <Windows.h>
+#include "KamataEngine.h"
+#include "GameScene.h"
+#include "TitleScene.h"
 using namespace KamataEngine;
     // デストラクタ
 GameScene::~GameScene()
@@ -19,6 +23,7 @@ GameScene::~GameScene()
 	for (Enemy*enemy:enemies_) 
 	{
 		delete enemy;
+
 	}
 	delete model_;
 	delete debugCamera_;
@@ -103,6 +108,9 @@ void GameScene::Initialize()
 	//仮の生成処理。後で消す。
 	deathParticles_ = new DeathParticles;
 	deathParticles_->Initialize(model_DeathParticles, &camera_, playerPosition);
+	//ゲームプレイフェーズから開始
+	phase_ = Phase::kPlay;
+
 }
 // 表示ブロックの生成
 void GameScene::GenerateBlocks() 
@@ -142,7 +150,6 @@ void GameScene::Update()
 			// 定数バッファに転送する
 			worldTransformBlock->TransferMatrix();
 			debugCamera_->Update();
-
 		}
 	}
 	player_->Update();
@@ -180,6 +187,13 @@ void GameScene::Update()
 	{
 		deathParticles_->Update();
 	}
+	switch (phase_) 
+	{
+	    case Phase::kPlay;
+			break;
+			case Phase::kDeath;
+			break;
+	}
 }
 void GameScene::Draw()
 {
@@ -210,4 +224,8 @@ void GameScene::Draw()
 	model_->Draw(worldTransform_, camera_, textureHandle_);
 	Model::PostDraw();
 	
+}
+void GameScene::ChangePhase()
+{
+
 }

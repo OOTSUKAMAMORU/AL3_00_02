@@ -115,6 +115,7 @@
     <ClCompile Include="MyMath.cpp" />
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="Skaydome.cpp" />
+    <ClCompile Include="TitleScene.cpp" />
     <ClCompile Include="ソース.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -201,6 +202,7 @@
     <ClInclude Include="MyMath.h" />
     <ClInclude Include="player.h" />
     <ClInclude Include="Skydome.h" />
+    <ClInclude Include="TitleScene.h" />
     <ClInclude Include="ヘッダー.h" />
     <ClInclude Include="ヘッダー1.h" />
   </ItemGroup>

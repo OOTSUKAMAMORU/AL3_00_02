@@ -47,5 +47,13 @@ public:
 	~GameScene();
 	void CheckAllCollisions();
 	DeathParticles* deathParticles_ = nullptr;
-
+	//ゲームのフェーズ(型)
+	enum class Phase 
+	{
+		kPlay,
+		kDeath,
+	};
+	//ゲームの現在フェーズ(変数)
+	Phase phase_;
+	void ChangePhase();
 };
