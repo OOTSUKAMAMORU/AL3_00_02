@@ -106,8 +106,7 @@ void GameScene::Initialize()
 	cameraController_->SetMovableArea(cameraArea);
 	player_->SetMapChipField(mapChipField_);
 	//仮の生成処理。後で消す。
-	deathParticles_ = new DeathParticles;
-	deathParticles_->Initialize(model_DeathParticles, &camera_, playerPosition);
+	
 	//ゲームプレイフェーズから開始
 	phase_ = Phase::kPlay;
 
@@ -138,6 +137,14 @@ void GameScene::GenerateBlocks()
 }
 void GameScene::Update() 
 {
+	ChangePhase();
+	switch (phase_) 
+	{
+	case Phase::kPlay:
+		break;
+	case Phase::kDeath:
+		break;
+	}
 	//ブロックの更新
 	for (std::vector<WorldTransform*>& worldTransformBlockLine : worldTransformBlocks_) 
 	{
@@ -187,13 +194,6 @@ void GameScene::Update()
 	{
 		deathParticles_->Update();
 	}
-	switch (phase_) 
-	{
-	case Phase::kPlay:
-			break;
-	case Phase::kDeath:
-			break;
-	}
 }
 void GameScene::Draw()
 {
@@ -227,5 +227,22 @@ void GameScene::Draw()
 }
 void GameScene::ChangePhase()
 {
-
+	switch (phase_) 
+	{
+	case Phase::kPlay:
+		if (player_->IsDead()) 
+		{
+			phase_ = Phase::kDeath;
+			const Vector3& deathParticlesPosition = player_->GetWorldPosition();
+			deathParticles_ = new DeathParticles;
+			deathParticles_->Initialize(model_DeathParticles, &camera_, deathParticlesPosition);
+		}
+		break;
+	case Phase::kDeath:
+		if (deathParticles_->IsFinished()) 
+		{
+			finished_ = true;
+		}
+		break;
+	}
 }

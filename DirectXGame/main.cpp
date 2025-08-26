@@ -35,7 +35,7 @@ void ChangeScene() {
 			if (gameScene->IsFinished())
 			 {
 				 //シーン変更
-				 scene=Scene::kGame;
+				 scene=Scene::kTitle;
 				 //旧シーンの解放
 				 delete gameScene;
 				 gameScene=nullptr;
@@ -87,6 +87,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 	// タイトルシーンの初期化
 	titleScene->Initialize();
 
+	scene = Scene::kTitle;
 
 	//メインループ
 	while (true)
@@ -96,11 +97,12 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 		{
 			break;
 		}
-		gameScene->Update();
+		ChangeScene();
+		UpdateScene();
 		//描画開始
 		dxCommon->PreDraw();
 		//描画終了
-		//gameScene->Draw();
+		DrawScene();
 		dxCommon->PostDraw();
 
 	}

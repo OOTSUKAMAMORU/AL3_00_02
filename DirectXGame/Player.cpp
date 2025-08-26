@@ -43,8 +43,10 @@ void Player::Update() {
 // Drawの関数定義
 void Player::Draw() {
 	// 3Dモデル描画
-
-	model_->Draw(worldTransform_, *camera_);
+	if (isDead_ == false) 
+	{
+		model_->Draw(worldTransform_, *camera_);
+	}
 }
 KamataEngine::Vector3 Player::GetWorldPosition() 
 { 
@@ -373,6 +375,7 @@ void Player::CheckMapCollisionLeft(CollisionMapInfo& info) {
 	{ 
 		(void)enemy;
 	    velocity_ += Vector3(0,1,0);
+	    isDead_ = true;
 	}
     //判定結果を反映して移動させる
 void Player::CheckMapMove(const CollisionMapInfo& info) 

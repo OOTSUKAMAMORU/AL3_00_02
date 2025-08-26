@@ -1,6 +1,6 @@
 #pragma once
 #include "KamataEngine.h"
-class TitleScene 
+class TitleScene
 {
 public:
 	//デストラクタ

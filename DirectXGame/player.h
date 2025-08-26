@@ -49,6 +49,7 @@ public:
 	void OnCollision(const Enemy* enemy);
 	bool IsFinished() const { return finished_; }
 	bool finished_ = false;
+	bool IsDead() const { return isDead_; }
 
 private:
 	KamataEngine::WorldTransform worldTransform_;
@@ -102,5 +103,4 @@ private:
 
 	// デスフラグ
 	bool isDead_ = false;
-	bool IsDead() const { return isDead_; }
 };
