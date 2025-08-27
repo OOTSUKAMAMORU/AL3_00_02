@@ -13,7 +13,7 @@ void Fade::Update() {
 	case Status::None:
 		break;
 	case Status::FadeIn:
-		counter_ += 1.0f / 6.0f;
+		counter_ += 1.0f / 60.0f;
 		if (counter_ >= duration_) {
 			counter_ = duration_;
 		}

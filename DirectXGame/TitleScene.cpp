@@ -42,7 +42,7 @@ void TitleScene::Update()
 		// タイトルシーンの終了条件
 		if (Input::GetInstance()->PushKey(DIK_SPACE)) 
 		{
-			finished_ = true;
+			finished_ = false;
 			// フェードアウト開始
 			phase_ = Phase::kFadeOut;
 			fade_->Start(Fade::Status::FadeOut, 1.0f);

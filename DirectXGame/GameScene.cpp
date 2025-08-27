@@ -104,9 +104,6 @@ void GameScene::Initialize() {
 	cameraController_->SetMovableArea(cameraArea);
 	player_->SetMapChipField(mapChipField_);
 	// 仮の生成処理。後で消す。
-
-	// ゲームプレイフェーズから開始
-	phase_ = Phase::kPlay;
 }
 // 表示ブロックの生成
 void GameScene::GenerateBlocks() {
@@ -211,6 +208,7 @@ void GameScene::Draw() {
 	skydome_->Draw();
 	model_->Draw(worldTransform_, camera_, textureHandle_);
 	Model::PostDraw();
+	fade_->Draw();
 }
 void GameScene::ChangePhase() {
 	switch (phase_) {
@@ -223,8 +221,8 @@ void GameScene::ChangePhase() {
 		}
 		break;
 	case Phase::kDeath:
-		if (deathParticles_->IsFinished()) {
-			finished_ = true;
+		if (deathParticles_->IsFinished()) 
+		{
 			phase_ = Phase::kFadeOut;
 			fade_->Start(Fade::Status::FadeOut, 1.0f);
 		}
