@@ -73,6 +73,8 @@ void TitleScene::Update()
 	worldTransformPlayer_.matWorld_ = MakeAffineMatrix(worldTransformPlayer_.scale_, worldTransformPlayer_.rotation_, worldTransformPlayer_.translation_);
 	//行列を定数バッファに転送
 	worldTransformPlayer_.TransferMatrix();
+
+	worldTransform_.rotation_.x = std::sin(rotate_);
 }
 //描画
 void TitleScene::Draw()

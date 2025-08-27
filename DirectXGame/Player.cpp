@@ -8,7 +8,7 @@ using namespace MathUtility;
 
 // Initializeの関数定義
 void Player::Initialize(KamataEngine::Model* model, KamataEngine::Camera* camera, const KamataEngine::Vector3& position) {
-	assert(model);
+	//assert(model);
 	model_ = model;
 	worldTransform_.Initialize();
 	camera_ = camera;

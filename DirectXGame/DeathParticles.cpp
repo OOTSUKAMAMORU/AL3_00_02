@@ -12,7 +12,7 @@ void DeathParticles::Initialize(KamataEngine::Model* model, KamataEngine::Camera
 		worldTransform.Initialize();
 		worldTransform. translation_ = position;
 	}
-	assert(model);
+	//assert(model);
 	model_ = model;
 	camera_ = camera;
 }

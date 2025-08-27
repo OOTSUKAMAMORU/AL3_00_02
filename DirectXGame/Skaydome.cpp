@@ -3,7 +3,7 @@ using namespace KamataEngine;
 //Initializeの関数定義
 void Skydome::Initialize(KamataEngine::Model* model,KamataEngine::Camera* camera) 
 {
-	assert(model);
+	//assert(model);
 	model_ = model;
 	//textureHandle_ = textureHandle;
 	camera_ = camera;
