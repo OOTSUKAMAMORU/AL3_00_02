@@ -7,6 +7,7 @@
 #include"MapChipField.h"
 #include "CameraController.h"
 #include "DeathParticles.h"
+#include "Fade.h"
 // ゲームシーン
 class GameScene
 {
@@ -51,8 +52,11 @@ public:
 	enum class Phase 
 	{
 		kPlay,
-		kDeath,
+		kDeath, 
+		kFadeIn, 
+		kFadeOut,
 	};
+	Fade* fade_ = nullptr;
 	//ゲームの現在フェーズ(変数)
 	Phase phase_;
 	void ChangePhase();
